@@ -1,0 +1,24 @@
+{
+  "name": "bot-starter-kit",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "pathetic",
+  "main": "./src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Donomas",
+  "license": "ISC",
+  "dependencies": {
+    "@puregram/scenes": "^2.0.1",
+    "@puregram/session": "^2.0.1-rc.1",
+    "cron": "^2.3.1",
+    "node-fetch": "^3.3.1",
+    "puregram": "^2.10.2",
+    "typescript": "^5.0.3"
+  },
+  "devDependencies": {
+    "@types/cron": "^2.0.1",
+    "@types/node": "^18.15.11"
+  }
+}

@@ -15,7 +15,7 @@ console.log = function (...args) {
 };
 logFile.write('\n'.repeat(5) + (' '.repeat(25) + `НАЧАЛО ЗАПУСКА БОТА: [${new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })}]\n`).repeat(4));
 console.error = console.log;
-process.title = 'Материнский бот ебать его в рот';
+process.title = 'bot-starter-kit';
 setInterval(trimLogFile, checkInterval);
 async function trimLogFile() {
     try {

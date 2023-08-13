@@ -1,4 +1,4 @@
-import fs from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
 
 const dataDir = path.resolve('../DataBase');
@@ -8,7 +8,7 @@ async function readJsonFile(filename: string) {
     const filePath = path.join(dataDir, filename);
 
     try {
-        const content = await fs.readFile(filePath, 'utf-8');
+        const content = await fs.promises.readFile(filePath, 'utf-8');
         return JSON.parse(content);
     } catch (err: any) {
         if (err.code === 'ENOENT') {
@@ -31,4 +31,15 @@ async function loadData() {
     return { users };
 }
 
-export { loadData };
+// Функция сохранения базы данных через временный файл для исключения проблем во время резкого отключения компьютера или сервера чтобы данные не были повреждены
+async function saveData(tmpFilePath: string, finalFilePath: string, data: any) {
+    try {
+        await fs.promises.writeFile(tmpFilePath, JSON.stringify(data, null, '\t'));
+        await fs.promises.rename(tmpFilePath, finalFilePath);
+    } catch (error) {
+        console.error("Ошибка при сохранении данных:", error);
+        // Вы можете здесь добавить дополнительную логику восстановления или оповещения
+    }
+}
+
+export { loadData, saveData };

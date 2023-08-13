@@ -1,6 +1,6 @@
 import { Telegram } from 'puregram';
 import fs from 'fs';
-import { loadData } from '../DataBase/index.js';
+import { loadData, saveData } from '../DataBase/index.js';
 import { User } from "../helpers/user.js";
 // Дополнительный обработчик inline-callback кнопок
 import { intermediateHandlerCallback } from "../handlers/intermediateHandlerCallback.js";
@@ -41,15 +41,9 @@ export const bot = new Telegram({
     ({ users } = await loadData());
     users = users.map((user) => new User(user));
     setInterval(async () => {
-        await saveData();
+        await saveData('../DataBase/users.json.tmp', '../DataBase/users.json', users.map(user => user.toSerializableObject()));
     }, 10_000);
 })();
-// Функция сохранения базы данных через временный файл для исключения проблем во время резкого отключения компьютера или сервера чтобы данные не были повреждены
-async function saveData() {
-    const serializableUsers = users.map(user => user.toSerializableObject());
-    fs.writeFileSync('../DataBase/users.json.tmp', JSON.stringify(serializableUsers, null, '\t'));
-    fs.renameSync('../DataBase/users.json.tmp', '../DataBase/users.json');
-}
 bot.updates.startPolling().catch(console.error);
 bot.updates.on('new_chat_members', async (context) => systemHandlerMessage(context));
 bot.updates.on('left_chat_member', async (context) => systemHandlerMessage(context));
